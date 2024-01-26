@@ -14,7 +14,22 @@ export default function Home() {
       <main className={styles.container}>
         <div>
           <h1>Gerenciando minhas manutenções com PWise</h1>
-          <Link href="/checkList">cadastrar usuario</Link>
+          <nav className={styles.menu}>
+            <ul>
+              <li>
+                {" "}
+                <Link href="/cad_user">Adcionar Usuario</Link>{" "}
+              </li>
+              <li>
+                {" "}
+                <Link href="/cad_machine">Adcionar Maquina</Link>{" "}
+              </li>
+              <li>
+                {" "}
+                <Link href="/check_list">Adcionar Check List</Link>{" "}
+              </li>
+            </ul>
+          </nav>
         </div>
       </main>
     </>
