@@ -1,27 +1,92 @@
+
+//express para criar o servidor
 const express = require("express");
 const app = express();
+
+//cors para conseguir  acessar as requisições de outro domínio.
 const cors = require("cors");
+
+//body parser para  pegar os dados do corpo da requisição
 const bodyParser = require("body-parser");
+
+//definição da porta onde vai rodar nossa api
 const port = 3001;
+
+//firebase admin para  autenticação e manipulação dos usuários
 var admin = require("firebase-admin");
+
+//service acount para apontar para a credencial do  firebase
 var serviceAccount = require("../services/credencial.json");
+
+//initializeApp serve para 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-app.use(cors());
-app.use(bodyParser.json());
 
-//rota inicial da api
+app.use(cors());// permite que todos os domínios acessem nossa API
+app.use(bodyParser.json());// permite que nosso server entenda json no formato de string
+
+//rota para verificar se a api esta rodando ok
 app.get("/", async (req, res) => {
-  res.json({ mensagem: "Api está no ar" });
+  res.json({ mensagem: "Api está no ar" }); // retorna uma mensagem em json
 });
 
+//rota get para recuperar os usuarios cadastrados no banco firestore
+app.get("/usuarios", async (req, res) =>{
+    try{
+      const snapshot = await admin.firestore().collection('users').get() ;
+      let usuarios = [];
+      snapshot.forEach((doc)=> {
+        usuarios.push(doc.data())
+        })
+        return res.status(200).send(usuarios);
+        }catch(err){
+          console.log(err);
+          return res.status(400).send(err.message || 'Erro ao buscar usuario');
+          }
+          })
+
+
+//rota get para recuperar as maquinas cadastradas no banco firestore
+app.get('/maquina',async (req,res)=>{
+  try{
+    const snapshot = await admin.firestore().collection('machines').get() ;
+    let usuarios = [];
+    snapshot.forEach((doc)=> {
+      usuarios.push(doc.data())
+      })
+      return res.status(200).send(usuarios);
+      }catch(err){
+        console.log(err);
+        return res.status(400).send(err.message || 'Erro ao buscar usuario');
+        }
+            })
+    
+
+
+//agora um metodo get para recuperar os questionarios cadastrados
+app.get('/check-lists',async (req,res)=>{
+  try{
+    const snapshot = await admin.firestore().collection('checklist').get() ;
+    let usuarios = [];
+    snapshot.forEach((doc)=> {
+      usuarios.push(doc.data())
+      })
+      return res.status(200).send(usuarios);
+      }catch(err){
+        console.log(err);
+        return res.status(400).send(err.message || 'Erro ao buscar usuario');
+        }
+            })
+    
+
+
+    
 // Rota POST para cadastrar usuário no Firestore
 app.post("/cad-user", async (req, res) => {
   try {
-    const { matricula, nome, telefone, contrato, situacao, username } =
-      req.body;
+    const { matricula, nome, telefone, contrato, situacao, username } =req.body; // pega os campos do corpo da requisição
     //qualquer problema nos dados retorna isso
     if (
       !matricula ||
@@ -49,7 +114,7 @@ app.post("/cad-user", async (req, res) => {
     res.json({
       mensagem: "Usuário cadastrado com sucesso!",
       
-    });
+    }); // retorna um json com a mensagem de que o cadastro foi feito com sucesso 
   } catch (error) {
     console.error("Erro ao cadastrar usuário:", error);
     res.status(500).json({ mensagem: "Erro interno ao cadastrar usuário" });
