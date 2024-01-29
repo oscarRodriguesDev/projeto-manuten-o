@@ -18,7 +18,7 @@ var admin = require("firebase-admin");
 //service acount para apontar para a credencial do  firebase
 var serviceAccount = require("../services/credencial.json");
 
-//initializeApp serve para 
+//initializeApp serve para  
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
