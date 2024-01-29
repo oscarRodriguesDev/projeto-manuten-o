@@ -68,7 +68,7 @@ app.get('/maquina',async (req,res)=>{
 //agora um metodo get para recuperar os questionarios cadastrados
 app.get('/check-lists',async (req,res)=>{
   try{
-    const snapshot = await admin.firestore().collection('checklist').get() ;
+    const snapshot = await admin.firestore().collection('checklist').get();
     let usuarios = [];
     snapshot.forEach((doc)=> {
       usuarios.push(doc.data())
@@ -126,14 +126,15 @@ app.post("/cad-user", async (req, res) => {
 // Rota POST para cadastrar maquinas no Firestore
 app.post("/cad-machines", async (req, res) => {
   try {
-    const {identificador,nome, modelo, tipo} =
+    const {identificador,nome, modelo, tipo,contrato} =
       req.body;
     //qualquer problema nos dados retorna isso
     if (
       !identificador ||
       !nome||
       !modelo ||
-      !tipo
+      !tipo||
+      !contrato
      
     ) {
       return res
@@ -194,6 +195,75 @@ app.post("/cad-checklist", async (req, res) => {
     res.status(500).json({ mensagem: "Erro interno ao criar check list" });
   }
 });
+
+
+//rota para deletar um usuario do banco de dados
+// Rota DELETE para excluir usuário do Firestore
+app.delete("/del-user/:matricula", async (req, res) => {
+  try {
+    const { matricula } = req.params; // Obtem a matrícula dos parâmetros da URL
+
+    // Verifica se a matrícula é válida
+    if (!matricula) {
+      return res.status(400).json({ mensagem: "Matrícula inválida." });
+      console.log('Matrícula inválida')
+    }
+
+    // Busca o usuário no Firestore usando a matrícula
+    const usuarioSnapshot = await admin.firestore().collection("users").where("matricula", "==", matricula).get();
+
+    // Verifica se o usuário existe
+    if (usuarioSnapshot.empty) {
+      return res.status(404).json({ mensagem: "Usuário não encontrado." });
+      console.log('Usuário não encontrado')
+    }
+
+    // Deleta o usuário do Firestore
+    await usuarioSnapshot.docs[0].ref.delete();
+
+    res.json({ mensagem: "Usuário deletado com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao deletar usuário:", error);
+    res.status(500).json({ mensagem: "Erro interno ao deletar usuário" });
+    console.log('Erro interno ao deletar usuário')
+  }
+});
+
+
+
+
+
+// Rota DELETE para excluir usuário do Firestore
+app.delete("/del-mach/:identificador", async (req, res) => {
+  try {
+    const { identificador } = req.params; // Obtem a matrícula dos parâmetros da URL
+
+    // Verifica se a matrícula é válida
+    if (!identificador) {
+      return res.status(400).json({ mensagem: "identificador inválido." });
+     
+    }
+
+    // Busca o usuário no Firestore usando a matrícula
+    const maquinaSnapshot = await admin.firestore().collection("machines").where("identificador", "==", identificador).get();
+
+    // Verifica se o usuário existe
+    if (maquinaSnapshot.empty) {
+      return res.status(404).json({ mensagem: "maquina não encontrada." });
+    
+    }
+
+    // Deleta o usuário do Firestore
+    await maquinaSnapshot.docs[0].ref.delete();
+
+    res.json({ mensagem: "Maquina deletada com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao deletar máquina:", error);
+    res.status(500).json({ mensagem: "Erro interno ao deletar máquina" });
+  
+  }
+});
+
 
 
 //endereço da api

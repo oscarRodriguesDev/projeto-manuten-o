@@ -8,6 +8,7 @@ const NewMachine = () => {
     nome: "",
     modelo: "",
     tipo: "",
+    contrato:"",
   });
 
   // Função para lidar com a mudança nos campos do formulário
@@ -42,6 +43,7 @@ const NewMachine = () => {
           nome: "",
           modelo: "",
           tipo: "",
+          contrato:""
         });
       } else {
         alert("Erro ao cadastrar usuário!");
@@ -84,6 +86,14 @@ const NewMachine = () => {
             type="text"
             name="tipo"
             value={dadosMaquina.tipo}
+            onChange={handleChange}
+          />
+
+          <label>contrato:</label>
+          <input
+            type="text"
+            name="contrato"
+            value={dadosMaquina.contrato}
             onChange={handleChange}
           />
 

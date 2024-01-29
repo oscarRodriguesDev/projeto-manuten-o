@@ -11,27 +11,9 @@ export default function Home() {
       <Head>
         <title>Pwise- Home</title>
       </Head>
-      <main className={styles.container}>
-        <div>
-          <h1>Gerenciando minhas manutenções com PWise</h1>
-          <nav className={styles.menu}>
-            <ul>
-              <li>
-                {" "}
-                <Link href="/cad_user">Adcionar Usuario</Link>{" "}
-              </li>
-              <li>
-                {" "}
-                <Link href="/cad_machine">Adcionar Maquina</Link>{" "}
-              </li>
-              <li>
-                {" "}
-                <Link href="/check_list">Adcionar Check List</Link>{" "}
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </main>
+    <main className={styles.container}>
+      <h1>Pagina Home</h1>
+    </main>
     </>
   );
 }
