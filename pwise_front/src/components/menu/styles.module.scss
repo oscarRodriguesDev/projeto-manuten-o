@@ -1,0 +1,38 @@
+
+.container{
+    max-width: 1300px;
+}
+.menu{
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  
+  ul{
+    display: flex;
+    align-items: center;
+    justify-self:center;
+   li{
+    border:1px solid green;
+    list-style: none;
+    background-color: black;
+    padding:0 25px;
+    font-size: 18px;
+   }
+   li:hover{
+    background-color: rgb(116, 110, 110);
+    color:#1a1a1a;
+   }
+   
+  }
+  
+    a{
+        text-decoration: none;
+        color:#fff;
+        background: transparent;
+    
+    }
+
+    a:hover{
+        background-color: rgb(57, 53, 53);
+    }
+}
