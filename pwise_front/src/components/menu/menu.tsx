@@ -30,6 +30,11 @@ const Menu = () => {
                 {" "}
                 <Link href="/get_checklist">CheckLists</Link>{" "}
               </li>
+              {/* menu para acessar os check listo */}
+              <li>
+                {" "}
+                <Link href="/dashboards">Dashboards</Link>{" "}
+              </li>
             </ul>
           </nav>
         </div>

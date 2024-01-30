@@ -1,4 +1,5 @@
 import styles from "./styles.module.scss";
+import UpdateButton from "@/components/botão/botao";
 import { useState } from "react";
 const PaginaDasMaquinas = () => {
   // Estado para armazenar os dados do formulário
@@ -23,7 +24,6 @@ const PaginaDasMaquinas = () => {
   // Função para lidar com a submissão do formulário
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
       // Enviar dados para o servidor usando fetch ou uma biblioteca como axios
       const resposta = await fetch("http://localhost:3001/cad-machines", {
@@ -33,11 +33,10 @@ const PaginaDasMaquinas = () => {
         },
         body: JSON.stringify(dadosMaquina),
       });
-
-      alert("Dados do formulário enviados: "); // Adicionando este log
+      console.log("Dados do formulário enviados: "); // Adicionando este log
 
       if (resposta.ok) {
-        alert("Usuário cadastrado com sucesso!");
+        alert("Maquina cadastrada com sucesso!");
         setDadosMaquina({
           identificador: "",
           nome: "",
@@ -46,10 +45,10 @@ const PaginaDasMaquinas = () => {
           contrato: "",
         });
       } else {
-        alert("Erro ao cadastrar usuário!");
+        console.log("Erro ao cadastrar Maquina!");
       }
     } catch (error) {
-      alert("Erro ao processar a requisição: ");
+      console.log("Erro ao processar a requisição: ");
     }
   };
 

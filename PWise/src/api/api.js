@@ -265,6 +265,49 @@ app.delete("/del-mach/:identificador", async (req, res) => {
 });
 
 
+/* Rotas de edição */
+
+
+// Rota update para atualizar dados de uma máquina no Firestore
+app.put("/atualiza-mach/:identificador", async (req, res) => {
+  try {
+    const { identificador } = req.params; // Obtém o identificador dos parâmetros da URL
+    const { nome, modelo, tipo, contrato } = req.body; // Obtém os dados atualizados do corpo da requisição
+
+    // Verifica se o identificador é válido
+    if (!identificador) {
+      return res.status(400).json({ mensagem: "Identificador inválido." });
+    }
+
+    // Busca a máquina no Firestore usando o identificador
+    const maquinaSnapshot = await admin
+      .firestore()
+      .collection("machines")
+      .where("identificador", "==", identificador)
+      .get();
+
+    // Verifica se a máquina existe
+    if (maquinaSnapshot.empty) {
+      return res.status(404).json({ mensagem: "Máquina não encontrada." });
+    }
+
+    // Atualiza os dados da máquina no Firestore
+    const maquinaRef = maquinaSnapshot.docs[0].ref;
+    await maquinaRef.update({
+      nome: nome || maquinaSnapshot.nome,
+      modelo: modelo || maquinaSnapshot.modelo,
+      tipo: tipo || maquinaSnapshot.tipo,
+      contrato: contrato || maquinaSnapshot.contrato,
+    });
+
+    res.json({ mensagem: "Máquina atualizada com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao atualizar máquina:", error);
+    res.status(500).json({ mensagem: "Erro interno ao atualizar máquina" });
+  }
+});
+
+
 
 //endereço da api
 app.listen(port, () => {
